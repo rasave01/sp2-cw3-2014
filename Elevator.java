@@ -92,45 +92,44 @@ public class Elevator {
 	@SuppressWarnings("unused")
 	public void customerJoins(Customer customer){
 		this.registerList.add(customer);
-		System.out.println("Customer "+customer.getID()+" joins the lift");
+		System.out.println("Customer "+customer.getID()+" joins the elevator");
 	}
 	
 	//method for customer leaving the elevator
 	@SuppressWarnings("unused")
 	public void customerLeaves(Customer customer){
-		
-		
-		
 		this.registerList.remove(customer);
-		//this.customerList.remove(customer);
-		System.out.println("Customer "+customer.getID()+" leaves the lift");
+		System.out.println("Customer "+customer.getID()+" leaves the elevator");
 	}
-	// method to move the elevator to the floor floorNo
+	
+	// method to move the elevator to the floor floorNo and display progress
 	public void move(int floorNo) throws InterruptedException {
-		int step=0;
+		// check if elevator needs to go up
 		if(this.currentFloor<floorNo){
 			System.out.println("Elevator moving ^^UP^^");
-			while(step<this.currentFloor){
-				System.out.print(".");
-				//Pause for 1 second
-				TimeUnit.SECONDS.wait(1);
+			int step=0;
+			while(step<floorNo-this.currentFloor){
+				System.out.print("^");
+				//Pause for 1/2 second				
+				Thread.sleep(250);
 				step++;
 			}
 			System.out.println();
 		}
+		
+		// check if elevator needs to go down
 		if(this.currentFloor>floorNo){
 			System.out.println("Elevator moving vvDOWNvv");
-			while(step>this.currentFloor){
-				System.out.print(".");
-				//Pause for 1 second
-				TimeUnit.SECONDS.sleep(1);
+			int step=0;
+			while(step<this.currentFloor-floorNo){
+				System.out.print("v");
+				//Pause for 1/2 second
+				Thread.sleep(250);
 				step++;
 			}
 			System.out.println();
 		}
 		this.currentFloor = floorNo;
 		System.out.println("Elevator arrives on floor "+ this.currentFloor);
-		
 	}
-
 }
