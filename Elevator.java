@@ -2,19 +2,18 @@ package elevator;
 
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
-
+// elevator constructor
 public class Elevator {
 
 	public int currentFloor;
 	public boolean direction;
 	public ArrayList<Customer> registerList = new ArrayList<Customer>();
 	public int topFloor;
-	
-	// elevator constructor
+
 	public Elevator(int numOfFloors) {	
 		this.topFloor = numOfFloors;
-		
 		System.out.println("Your building was equipped with an elevator.");
 		
 		if(numOfFloors>12){	
@@ -39,15 +38,15 @@ public class Elevator {
 		
 		// assign direction based on random floor
 		// can only be Up for 1 and Down for top floor
-		/*if (currentFloor==1){
+		if (currentFloor==1){
 				setDirection(true);
 		} else if (currentFloor==topFloor){ 
 				setDirection(false);
 				} else {
 					Random randomDirection = new Random();
 					boolean randomDir = randomDirection.nextBoolean();
-					//setDirection(randomDir);	
-				}*/
+					setDirection(randomDir);	
+				}
 	}
 	
 				
@@ -93,7 +92,7 @@ public class Elevator {
 	@SuppressWarnings("unused")
 	public void customerJoins(Customer customer){
 		this.registerList.add(customer);
-		System.out.println("Customer "+customer.getID()+" joins the elevator");
+		System.out.println("Customer "+customer.getID()+" joins the lift");
 	}
 	
 	//method for customer leaving the elevator
@@ -104,12 +103,34 @@ public class Elevator {
 		
 		this.registerList.remove(customer);
 		//this.customerList.remove(customer);
-		System.out.println("Customer "+customer.getID()+" leaves the elevator");
+		System.out.println("Customer "+customer.getID()+" leaves the lift");
 	}
 	// method to move the elevator to the floor floorNo
-	public void move(int floorNo) {
+	public void move(int floorNo) throws InterruptedException {
+		int step=0;
+		if(this.currentFloor<floorNo){
+			System.out.println("Elevator moving ^^UP^^");
+			while(step<this.currentFloor){
+				System.out.print(".");
+				//Pause for 1 second
+				TimeUnit.SECONDS.wait(1);
+				step++;
+			}
+			System.out.println();
+		}
+		if(this.currentFloor>floorNo){
+			System.out.println("Elevator moving vvDOWNvv");
+			while(step>this.currentFloor){
+				System.out.print(".");
+				//Pause for 1 second
+				TimeUnit.SECONDS.sleep(1);
+				step++;
+			}
+			System.out.println();
+		}
 		this.currentFloor = floorNo;
-		System.out.println("Elevator moves to floor "+ this.currentFloor);
+		System.out.println("Elevator arrives on floor "+ this.currentFloor);
+		
 	}
 
 }

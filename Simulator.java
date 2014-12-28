@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Simulator {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 
 		Scanner input = new Scanner(System.in);
 		System.out.println("Enter the number of floors for the building: ");
@@ -25,27 +25,29 @@ public class Simulator {
 		//Start simulation
 		System.out.print("The simulation will run for "+ numOfCustomers+ " customers, ");
 		initiateSimulation(building1);
-		
 		createCustomers(building1,numOfCustomers);
 		
-		int defaultRuns = runDefaultStrategy(building1);
-		int ourRuns = runOurStrategy(building1);
+		long defaultRuns = runDefaultStrategy(building1);
+		long ourRuns = runOurStrategy(building1);
 		
 		//check runs and show result
 		if (defaultRuns == ourRuns){
 			System.out.println ("Both strategies have the same efficiency");
 		} else if (defaultRuns<ourRuns){
-					System.out.println ("The default strategy is more efficient");
+				long eff=ourRuns-defaultRuns;
+					System.out.println ("The default strategy is more efficient " + eff + "miliseconds.");
 				} else {
-					System.out.println ("Our strategy is more efficient");
+					long eff=defaultRuns-ourRuns;
+					System.out.println ("Our strategy is more efficient by " + eff + "miliseconds.");
 				}
 	}
 	// method to run our strategy in Building Bld 
 	//Will return the number of stops the elevator made to pick-up and drop all customers
-	private static int runOurStrategy(Building bld) {
+	private static long runOurStrategy(Building bld) throws InterruptedException {
 		
 		// initialise result
 		int result = 0;
+		StopWatch ourStrategyTime = new StopWatch();
 		System.out.println("Our strategy simulation has started:");
 		
 		// move the elevator to the 1st floor
@@ -70,9 +72,6 @@ public class Simulator {
 						bld.elevator1.customerLeaves(currentLiftCustomer);
 					}
 				}
-				
-				
-				
 				Customer currentCustomer = customerIterator.next();
 				//System.out.println("Checking customer "+currentCustomer.getID());
 				
@@ -103,16 +102,19 @@ public class Simulator {
 			}
 			checkFloor--;
 		}
-		System.out.println("Our strategy efficiency - Number of stops = "+result);
-		return result;
+		//System.out.println("Our strategy efficiency - Number of stops = "+result);
+		ourStrategyTime.stop();
+		long ourTime = ourStrategyTime.getElapsedTime();
+		System.out.println("Our strategy made "+result+" elevator moves. The run-time was : "+ourTime+" miliseconds");
+		return ourTime;
 		
 	}
 
 	
 	// method to run the default strategy in Building Bld 
 	//Will return the number of stops the elevator made to pick-up and drop all customers
-	private static int runDefaultStrategy(Building bld) {
-		
+	private static long runDefaultStrategy(Building bld) throws InterruptedException {
+		StopWatch defaultStrategyTime = new StopWatch();
 		// initialise results
 		int result = 0;
 		System.out.println("Default strategy simulation has started:");
@@ -162,8 +164,10 @@ public class Simulator {
 			}
 			checkFloor--;
 		}
-		System.out.println("Default strategy efficiency - Number of stops = "+result);
-		return result;
+		defaultStrategyTime.stop();
+		long defTime = defaultStrategyTime.getElapsedTime();
+		System.out.println("Default strategy made "+result+" elevator moves. The run-time was : "+defTime+" miliseconds");
+		return defTime;
 	}
 
 	private static void createCustomers(Building bld, int numOfCustomers) {
