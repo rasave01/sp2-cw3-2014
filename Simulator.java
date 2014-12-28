@@ -40,18 +40,84 @@ public class Simulator {
 					System.out.println ("Our strategy is more efficient");
 				}
 	}
-
-	private static int runOurStrategy(Building building1) {
-		// TODO Auto-generated method stub
+	// method to run our strategy in Building Bld 
+	//Will return the number of stops the elevator made to pick-up and drop all customers
+	private static int runOurStrategy(Building bld) {
+		
+		// initialise result
 		int result = 0;
+		System.out.println("Our strategy simulation has started:");
+		
+		// move the elevator to the 1st floor
+		bld.elevator1.move(1);
+		
+		// lift going up and picking up all customers
+		int checkFloor = bld.elevator1.currentFloor;
+		while(checkFloor<=bld.elevator1.topFloor){
+			//System.out.println("Checking floor "+checkFloor);
+			Iterator<Customer> customerIterator = bld.customerList.iterator();
+			while(customerIterator.hasNext()){
+				
+				// check that customers already in the lift do not need to get off on this floor
+				// if so take them off the lift and off the registerList
+				for(int i=0; i<bld.elevator1.registerList.size(); i++){
+					Customer currentLiftCustomer = bld.elevator1.registerList.get(i);
+					if(currentLiftCustomer.getDestinationFloor()==checkFloor){
+						if(bld.elevator1.currentFloor!=checkFloor){
+							bld.elevator1.move(checkFloor);
+							result++;
+						}
+						bld.elevator1.customerLeaves(currentLiftCustomer);
+					}
+				}
+				
+				
+				
+				Customer currentCustomer = customerIterator.next();
+				//System.out.println("Checking customer "+currentCustomer.getID());
+				
+				if(currentCustomer.getStartFloor()==checkFloor){
+					if(bld.elevator1.currentFloor!=checkFloor){
+						bld.elevator1.move(checkFloor);
+						result++;
+					}
+					bld.elevator1.customerJoins(currentCustomer);
+				}
+
+			}
+			checkFloor++;
+		}
+		while(checkFloor>=1){
+			
+			//iterate "manually" as using an iterator while removing element throws error  
+			for(int i=0; i<bld.elevator1.registerList.size(); i++){
+				Customer currentLiftCustomer = bld.elevator1.registerList.get(i);
+				
+				if(currentLiftCustomer.getDestinationFloor()==checkFloor){
+					if(bld.elevator1.currentFloor!=checkFloor){
+						bld.elevator1.move(checkFloor);
+						result++;
+					}
+					bld.elevator1.customerLeaves(currentLiftCustomer);
+				}
+			}
+			checkFloor--;
+		}
+		System.out.println("Our strategy efficiency - Number of stops = "+result);
 		return result;
+		
 	}
 
+	
+	// method to run the default strategy in Building Bld 
+	//Will return the number of stops the elevator made to pick-up and drop all customers
 	private static int runDefaultStrategy(Building bld) {
-		// TODO Auto-generated method stub
-		// move the elevator to the 1st floor
+		
+		// initialise results
 		int result = 0;
 		System.out.println("Default strategy simulation has started:");
+		
+		// move the elevator to the 1st floor
 		bld.elevator1.move(1);
 		
 		// lift going up and picking up all customers
@@ -74,12 +140,14 @@ public class Simulator {
 			checkFloor++;
 		}
 		
-		//move elevator to top floor
+		//move elevator to top floor as required by default strategy
 		bld.elevator1.move(bld.elevator1.topFloor);
-		
-		// lift coming down and dropping all customers
+		result++;
+		// lift coming down and dropping all customers in the lift
 		checkFloor = bld.elevator1.currentFloor;
+		
 		while(checkFloor>=1){
+			
 			//iterate "manually" as using an iterator while removing element throws error  
 			for(int i=0; i<bld.elevator1.registerList.size(); i++){
 				Customer currentLiftCustomer = bld.elevator1.registerList.get(i);
@@ -94,8 +162,6 @@ public class Simulator {
 			}
 			checkFloor--;
 		}
-		
-		
 		System.out.println("Default strategy efficiency - Number of stops = "+result);
 		return result;
 	}

@@ -3,7 +3,7 @@ package elevator;
 import java.util.Random;
 import java.util.ArrayList;
 
-// elevator constructor
+
 public class Elevator {
 
 	public int currentFloor;
@@ -11,7 +11,7 @@ public class Elevator {
 	public ArrayList<Customer> registerList = new ArrayList<Customer>();
 	public int topFloor;
 	
-
+	// elevator constructor
 	public Elevator(int numOfFloors) {	
 		this.topFloor = numOfFloors;
 		
