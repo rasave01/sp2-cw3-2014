@@ -18,7 +18,7 @@ public class Customer {
 		//System.out.println("Random customer "+ID+"starts on floor "+startFloor+" and goes to floor "+destinationFloor);
 	}
 	public int getStartFloor(){
-		return startFloor;
+		return this.startFloor;
 	}
 	
 	public int getDestinationFloor(){
