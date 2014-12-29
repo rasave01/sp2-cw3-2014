@@ -5,6 +5,7 @@
  */
 package elevator;
 
+import java.util.Iterator;
 import java.util.Random;
 import java.util.ArrayList;
 //import java.util.concurrent.TimeUnit;
@@ -38,14 +39,12 @@ public class Elevator {
 		}
 		System.out.println();	
 		
-		//System.out.print("The elevator will be assigned a random floor.");
-		
-		//this.currentFloor = setRandomFloor(numOfFloors);
-		
 		getCurrentFloor();
 		
-		// assign direction based on random floor
-		// can only be Up for 1 and Down for top floor
+		/**
+		 *  assigns direction based on random floor
+		 *  can only be Up for 1 and Down for top floor
+		 */
 		if (currentFloor==1){
 				setDirection(true);
 		} else if (currentFloor==topFloor){ 
@@ -58,15 +57,18 @@ public class Elevator {
 	}
 	
 				
-	// returns the current floor of the elevator
+	/**
+	 *  returns the current floor of the elevator
+	 * @return <code>currentFloor</code>
+	 */
 	public int getCurrentFloor() {
 		return currentFloor;
-		//System.out.println("The current floor is "+ currentFloor + ".");
 	}
 
-	/* 
-	 * @return random floor number limited/bound by
-	 * the number of floors in the building as chosen by the user
+	/**
+	 * Sets a random floor within a range set by the maximum number as given by user input in <code>numOfFloors</code> 
+	 * @return random floor number
+	 * @param numOfFloors - user input
 	 */
 	public static int setRandomFloor(int numOfFloors) {
 		Random randomFloor = new Random(); 
@@ -85,7 +87,9 @@ public class Elevator {
 		}
 	}
 	
-	//direction getter
+	/**
+	 * direction getter
+	 */
 	public void getDirection() {
 		if (direction==true){
 			System.out.println("Elevator going	 ^.UP.^");
@@ -94,37 +98,49 @@ public class Elevator {
 		}
 	} //end of getDirection method
 
-	//direction setter
+	/**
+	 * direction setter
+	 * @param direction
+	 */
 	public void setDirection(boolean direction) {
 		this.direction = direction;
 	} // end of setDirection method
 
-	//method for customer joining the elevator
+	/**
+	 * method for customer joining the elevator
+	 * @param customer
+	 */
 	//@SuppressWarnings("unused")
 	public void customerJoins(Customer customer){
 		this.registerList.add(customer);
 		System.out.println("Customer "+customer.getID()+" joins the elevator");
+		printRegisterListIDs();
 	}
 	
-	//method for customer leaving the elevator
+	/**
+	 * method for customer leaving the elevator
+	 * @param customer
+	 */
 	//@SuppressWarnings("unused")
 	public void customerLeaves(Customer customer){
 		this.registerList.remove(customer);
 		System.out.println("Customer "+customer.getID()+" leaves the elevator");
+		printRegisterListIDs();
 	} // end of customerLeaves method
 	
 	// method to move the elevator to the floor floorNo and display progress
 	public int move(int floorNo) throws InterruptedException {
 		
 		int step = 0;
-		
 		// check if elevator needs to go up
 		if(this.currentFloor<floorNo){
-			System.out.println("Elevator moving ^^UP^^ to floor" + floorNo);
-			//step=0;
+			
+			if (floorNo!=1){// quick fix for moving up to floor 1 anomaly - should look into this if there's time...
+				System.out.println("Elevator moving ^^UP^^ to floor " + floorNo);
+			}
 			while(step<floorNo-this.currentFloor){
 				System.out.print("^");
-				//Pause for 1/4 second				
+				//Pause for 1/2 second				
 				Thread.sleep(500);
 				step++;
 			}
@@ -134,11 +150,11 @@ public class Elevator {
 		// check if elevator needs to go down
 		if(this.currentFloor>floorNo){
 			System.out.println("Elevator moving vvDOWNvv to floor " + floorNo);
-			//step=0;
+	
 			while(step<this.currentFloor-floorNo){
 				System.out.print("v");
-				//Pause for 1/4 second
-				Thread.sleep(250);
+				//Pause for 1/2 second
+				Thread.sleep(500);
 				step++;
 			}
 			System.out.println();
@@ -147,4 +163,22 @@ public class Elevator {
 		System.out.println("Elevator arrives on floor "+ this.currentFloor);
 		return step;
 	} // end of move method
+	
+	
+	/**
+	 * Prints the list of customers currently in the elevator
+	 * */
+	public void printRegisterListIDs(){
+		// initialise print statement
+		String registerList = "The following customers are in the elevator: ";
+		Iterator<Customer> registerIterator = this.registerList.iterator();
+		while (registerIterator.hasNext()){
+			// iterate through customers in the lift and add IDs to print statement
+			registerList += (registerIterator.next().getID()+"; ");
+		}
+		// remove the last "; "
+		registerList = registerList.substring(0, registerList.length()-2);
+		// print out the print statement
+		System.out.println(registerList);
+	}
 }

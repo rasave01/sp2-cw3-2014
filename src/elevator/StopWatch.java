@@ -1,6 +1,5 @@
 /*
- * This stopwatch class will be used to measure  
- * the running time of the two elevator strategies i.e. : 
+ * This <code>StopWatch</code> class will be used to measure the running time of the two elevator strategies i.e. : 
  * - The default strategy
  * - The custom strategy
  * 
@@ -18,7 +17,7 @@ public class StopWatch {
 	private boolean isRunning;
 	
 	/**
-	 * Constructs a stopwatch that is in the stopped state
+	 * Constructs a <code>StopWatch</code> that is in the stopped state
 	 * and has no time accumulated
 	 */
 	public StopWatch(){
@@ -26,7 +25,7 @@ public class StopWatch {
 	}
 	
 	/**
-	 * Starts the stopwatch. 
+	 * Starts the <code>StopWatch</code>. 
 	 * Time starts accumulating now.
 	 */
 	public void start(){

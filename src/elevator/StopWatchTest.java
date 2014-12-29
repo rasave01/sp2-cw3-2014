@@ -10,14 +10,16 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * @author Radu Asavei + Gary Murphy
- *
- */
 public class StopWatchTest {
 
+	/**
+	 * Creates new instance of <code>StopWatch</code> to run tests on.
+	 */
 	StopWatch timer = new StopWatch();
 	
+	/*
+	 * Tests StopWatch class
+	 */
 	@Test
 	public void getElapsedTimeTest() throws InterruptedException {
 		timer.start();

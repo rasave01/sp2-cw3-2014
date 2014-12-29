@@ -11,6 +11,13 @@ import org.junit.Test;
 
 public class CustomerTest {
 
+	/**
+	 * @Test <code>getNumOfFloors</code> method from the Customer class
+	 * Creates a Building instance 
+	 * Creates a Customer instance
+	 * Although the test cannot test for random numbers
+	 * the <code>getStartFloor</code> method will generate a number to view in the error
+	 */
 	@Test
 	public void getStartFloorTest() {
 		Building bldg = new Building(20);
@@ -20,6 +27,7 @@ public class CustomerTest {
 		int actual = a.getStartFloor();
 		assertEquals("Wrong answer: ", expected, actual);
 	}
+	
 	
 	@Test
 	public void getDestinationFloorTest() {

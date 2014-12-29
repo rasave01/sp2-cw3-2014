@@ -8,7 +8,6 @@ package elevator;
 
 import java.util.InputMismatchException;
 import java.util.Iterator;
-
 import java.util.Scanner;
 
 
@@ -40,46 +39,60 @@ public class Simulator {
 		int numOfFloorsValid = 0;
 		boolean validInput = false;
 		System.out.println("Enter the number of floors for the building: ");
-		
-		/*
-		 * 
+		/**
+		 * while loop validates input - checks for positive integers
+		 * @throws IllegalArgumentException - if 
+		 * @throws InputMismatchException
+		 * @throws InputMismatchException
 		 */
 		while(!validInput){
 			try {
-				//System.out.println("Enter the number of floors for the building: ");
 				numOfFloorsValid = input.nextInt();
-				//System.out.println("numOfFloorsValid = " + numOfFloorsValid);
-				validInput = true;
-				break;
+				if (numOfFloorsValid <= 1) {
+				    throw new IllegalArgumentException();
+				}
+				break;				
 			}catch (InputMismatchException invalideInputError) { //if an exception appears, prints message below
 			    System.err.println("Please enter an integer greater than 1! ");
 			    input.next(); // clear scanner of incorrect input
 			    continue; // continues to loop if error is found
+			}catch (IllegalArgumentException invalideInputError) { //if an exception appears, prints message below
+				System.err.println("Only integers greater than 1 allowed, please try again! ");
+				//input.next(); // clear scanner of incorrect input
+				continue; // continues to loop if error is found
 			}
-		};
+		}
+		
 		int numOfFloors = numOfFloorsValid;
 		Building building1  = new Building(numOfFloors);
-		System.out.println("Your building has: "+ numOfFloors + " floors." );
-		
 		validInput = false;
+		
 		int numOfCustomersValid = 0;
 		System.out.println("Enter the number of customers for the elevator: ");
 		while(!validInput){
 			try {
 				numOfCustomersValid = input.nextInt();
+				if (numOfCustomersValid <= 0) {
+				    throw new IllegalArgumentException();
+				}
 				break;
 			}catch (InputMismatchException invalideInputError) { //if an exception appears, prints message below
-			    System.err.println("Please enter an integer greater than 1! ");
+			    System.err.println("Please enter an integer greater than 0! ");
 			    input.next(); // clear scanner of incorrect input
 			    continue; // continues to loop if error is found
+			}catch (IllegalArgumentException invalideInputError) { //if an exception appears, prints message below
+				System.err.println("Only integers greater than 0 allowed, please try again! ");
+				//input.next(); // clear scanner of incorrect input
+				continue; // continues to loop if error is found
 			}
-		}
-		
+		};
 		input.close(); // Close scanner to save memory during runtime.
 		
 		int numOfCustomers = numOfCustomersValid;
 		
-		//Start simulation
+		/**
+		 * Starts simulation
+		 */
 		System.out.print("The simulation will run for "+ numOfCustomers+ " customers, ");
 		initiateSimulation(building1);
 		createCustomers(building1,numOfCustomers);
@@ -87,7 +100,9 @@ public class Simulator {
 		long defaultTime = runDefaultStrategy(building1);
 		long ourTime = runOurStrategy(building1);
 		
-		//check runs and show result
+		/**
+		 * Checks runs and shows result
+		 */
 		System.out.println ("**************** SIMULATION RESULTS COMPARISON ************************");
 		System.out.println ("elevator stops = the number of times the elevator stopped        ");
 		System.out.println ("      The default strategy made "+defaultMoves+" elevator stops.");
@@ -135,18 +150,18 @@ public class Simulator {
 		System.out.println ("************************ END OF SIMULATION ****************************");
 	} // end of main method
 	
-	/* <pre>	
-	 * Runs our strategy in Building Bld 
+	/** <pre>	
+	 * 	Runs our strategy in Building Bld 
 	 * 	@return <code>ourTime</code> i.e. the time the elevator took to pick-up and drop all customers
-	 * </pre>
+	 * 	</pre>
 	 */
 	private static long runOurStrategy(Building bld) throws InterruptedException {
 		
 		
-		/* 	move the elevator to the 1st floor in order to reset
-		* 	This move does not count towards the result, 
-		*	as both simulations need to start from the same floor, 
-		*	for a more accurate comparison 
+		/** 	moves the elevator to the 1st floor in order to reset its position
+		* 		This move does not count towards the result, 
+		*		as both simulations need to start from the same floor, 
+		*		for a more accurate comparison 
 		*/
 		bld.elevator1.move(1); 
 		
@@ -177,31 +192,28 @@ public class Simulator {
 					}
 					bld.elevator1.customerJoins(currentCustomer);
 				}
-
 			}
 			
-			/* check if customers already in the elevator need to get off on this floor
-			 * if so, take them out of the elevator and off of the registerList
+			/**	 	checks if customers already in the elevator need to get off on this floor
+			 * 		if so, take them out of the elevator and off of the registerList
 			 */
-			for(int i=0; i<bld.elevator1.registerList.size(); i++){
-				Customer currentElevCustomer = bld.elevator1.registerList.get(i);
-				if(currentElevCustomer.getDestinationFloor()==checkFloor){
-					/*if(bld.elevator1.currentFloor!=checkFloor){
-						bld.elevator1.move(checkFloor);
-						result++;
-					}*/
-					bld.elevator1.customerLeaves(currentElevCustomer);
+			if(bld.elevator1.registerList.size()>0){
+				for(int i=bld.elevator1.registerList.size(); i<=0; i--){
+					Customer currentElevCustomer = bld.elevator1.registerList.get(i);
+					if(currentElevCustomer.getDestinationFloor()==checkFloor){
+						bld.elevator1.customerLeaves(currentElevCustomer);
+					}
 				}
-			}
-			
+			}	
 			checkFloor++;
 		}
 		while(checkFloor>=1){
 			
 			/*
-			 *   iterate "manually" as using an iterator while removing element throws error
+			 *   iterates "manually" as using an iterator while removing element throws error
 			 */
-			for(int i=0; i<bld.elevator1.registerList.size(); i++){
+			
+			for(int i=bld.elevator1.registerList.size()-1; i>=0; i--){	
 				Customer currentElevCustomer = bld.elevator1.registerList.get(i);
 				
 				if(currentElevCustomer.getDestinationFloor()==checkFloor){
@@ -223,9 +235,8 @@ public class Simulator {
 		return ourTime;
 		
 	} //end of runOurStrategy method
-
 	
-	/*	method to run the default strategy in the user created building
+	/**	Runs the default strategy in the user created building
 	 * 	@return the number of stops the elevator made to pick-up and drop all customers
 	 */
 	private static long runDefaultStrategy(Building bld) throws InterruptedException {
@@ -238,10 +249,7 @@ public class Simulator {
 		defaultSteps = 0;
 		defaultMoves = 0;
 		defaultStrategyTime.start();
-		
-		
 		System.out.println("Default strategy simulation has started:");
-				
 		// elevator going up and picking up all customers
 		int checkFloor = bld.elevator1.currentFloor;
 		while(checkFloor<=bld.elevator1.topFloor){
@@ -250,7 +258,6 @@ public class Simulator {
 			while(customerIterator.hasNext()){
 				Customer currentCustomer = customerIterator.next();
 				//System.out.println("Checking customer "+currentCustomer.getID());
-				
 				if(currentCustomer.getStartFloor()==checkFloor){
 					if(bld.elevator1.currentFloor!=checkFloor){
 						defaultSteps = defaultSteps + bld.elevator1.move(checkFloor);
@@ -261,21 +268,21 @@ public class Simulator {
 			}
 			checkFloor++;
 		}
-		
 		//move elevator to top floor as required by default strategy
 		defaultSteps = defaultSteps + bld.elevator1.move(bld.elevator1.topFloor);
 		defaultMoves++;
 		
-		
-		// elevator coming down and dropping off all customers in the elevator
+		/**
+		 * elevator comes down and drops off all customers in the elevator on their destination floors
+		 */
 		checkFloor = bld.elevator1.currentFloor;
-		
 		while(checkFloor>=1){
 			
-			//iterate "manually" as using an iterator while removing element throws error  
-			for(int i=0; i<bld.elevator1.registerList.size(); i++){
-				Customer currentElevCustomer = bld.elevator1.registerList.get(i);
-				
+			/**
+			 * iterate "manually" as using an iterator while removing element throws error  
+			 */
+			for(int i=bld.elevator1.registerList.size()-1; i>=0; i--){
+				Customer currentElevCustomer = bld.elevator1.registerList.get(i);		
 				if(currentElevCustomer.getDestinationFloor()==checkFloor){
 					if(bld.elevator1.currentFloor!=checkFloor){
 						defaultSteps = defaultSteps + bld.elevator1.move(checkFloor);
@@ -286,7 +293,6 @@ public class Simulator {
 			}
 			checkFloor--;
 		}
-		
 		defaultStrategyTime.stop();
 		long defTime = defaultStrategyTime.getElapsedTime();
 		System.out.println("*************************************************");
@@ -296,9 +302,9 @@ public class Simulator {
 		return defTime;
 	} // end of runDefaultStrategy method
 	
-	
-	/* iterate through number of customers and create customers
-	 * use i as ID as this will ensure each customer has has an unique ID
+	/** iterates through number of customers and creates customers
+	 * 	uses i as ID as this will ensure each customer has has an unique ID
+	 * 	XXX - not the cleanest ID assignment, but it works!
 	 */
 	private static void createCustomers(Building bld, int numOfCustomers) {
 		
@@ -306,10 +312,13 @@ public class Simulator {
 			Customer newCustomer = new Customer(i,bld);
 			bld.customerList.add(newCustomer);
 			System.out.println("New customer created: ID="+newCustomer.getID()+"; Start floor="+newCustomer.getStartFloor()+"; Destination floor="+newCustomer.getDestinationFloor());
-		}
-		
+		}	
 	}
-
+	
+	/**
+	 * Initiates the elevator simulation
+	 * @param bld
+	 */
 	static void initiateSimulation(Building bld){
 		//System.out.print("The simulation will run for "+ bld.elevator1.numOfCustomers+ " customers, ");
 		if (bld.getNumOfFloors()>12){
@@ -320,5 +329,5 @@ public class Simulator {
 		}
 		System.out.println();
 		bld.elevator1.getCurrentFloor();
-	} //end of createCustomers method
+	} //end of initiateSimulation method
 }

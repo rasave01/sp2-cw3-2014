@@ -15,13 +15,22 @@ public class Customer {
 	private boolean inElevator;
 	private int ID;
 	
-	/*	
-	 * 	customer constructor
+	/**
+	 * Constructs a <code>Customer</code> with
+	 * <li>an ID number</li>
+	 * <li>a start floor (random)</li>
+	 * <li>a destination floor (random)</li>
+	 * start and destination floor is bound by @param bld
 	 */
 	public Customer(int newID, Building bld){
 		ID = newID;
 		startFloor = Elevator.setRandomFloor(bld.getNumOfFloors());
 		destinationFloor = Elevator.setRandomFloor(bld.getNumOfFloors());
+		
+		// makes sure destination is not the same with start
+		while (destinationFloor==startFloor){
+			destinationFloor = Elevator.setRandomFloor(bld.getNumOfFloors());
+		}
 		inElevator = false;
 	} //end of Customer constructor
 	

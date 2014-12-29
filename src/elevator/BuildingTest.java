@@ -14,7 +14,9 @@ public class BuildingTest {
 
 	private Building bldg;
 
-
+	/**
+	 * @Test <code>getNumOfFloors</code> method from the Elevator class
+	 */
 	@Test
 	public void getNumOfFloorsTest() {
 		Building bldg = new Building(13);
@@ -23,9 +25,13 @@ public class BuildingTest {
 		assertEquals("Wrong answer: ", expected, actual);
 	}
 
-	
+	/**
+	 * @Test <code>setNumOfFloors</code> method from the Elevator class
+	 * @param <code>bldg</code> is created and initialised to null
+	 * allowing the test to set the number of floors
+	 */
 	@Test 
-	public void setNumOfFloorsrrTest(){
+	public void setNumOfFloorsTest(){
 		bldg = null;
 		int expected = 13;
 		int actual = bldg.setNumOfFloors(13);
