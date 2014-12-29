@@ -1,15 +1,19 @@
-package elevator;
-
 /**
  * @author Radu Asavei + Gary Murphy
- *
+ * @since 2-November-2014
+ * @version 29-December-2014
  */
+
+package elevator;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 public class BuildingTest {
+
+	private Building bldg;
+
 
 	@Test
 	public void getNumOfFloorsTest() {
@@ -18,21 +22,14 @@ public class BuildingTest {
 		int actual = bldg.getNumOfFloors();
 		assertEquals("Wrong answer: ", expected, actual);
 	}
+
 	
 	@Test 
-	public void setNumOfFloorsTest(){
-		Building bldg = new Building(10);
+	public void setNumOfFloorsrrTest(){
+		bldg = null;
 		int expected = 13;
-		int actual = bldg.setNumOfFloors(13); // Warning - cannot convert from a void to an int
+		int actual = bldg.setNumOfFloors(13);
 		assertEquals("Wrong answer: ", expected, actual);
 	}
-	
-	/*@Test 
-	public void setNumOfFloorsrrTest(){
-		Building bldg = new Building(10);
-		int expected = 13;
-		int actual = bldg.setNumOfFloors(13);;
-		assertEquals("Wrong answer: ", expected, actual);
-	}*/
 
 }

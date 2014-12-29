@@ -1,13 +1,14 @@
 /*
- * This stopwatch will be used to measure the running time of the two 
- * elevator strategies i.e. 
+ * This stopwatch class will be used to measure  
+ * the running time of the two elevator strategies i.e. : 
  * - The default strategy
  * - The custom strategy
  * 
- * @author Radu Asavei + Gary Murphy
+ * @author Radu Asavei &amp Gary Murphy
  * 		Taken from class notes: Sorting and Searching (p13-16)
- * 		Copyright © 2013 by John Wiley & Sons.
- * @since 2nd November 2014
+ * 		Notes credit: 			Copyright © 2013 by John Wiley & Sons.
+ * @since 2-November-2014
+ * @version 29-December-2014
  */
 package elevator;
 

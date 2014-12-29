@@ -1,17 +1,18 @@
 /**
  * @author Radu Asavei + Gary Murphy
- *
+ * @since 2-November-2014
+ * @version 29-December-2014
  */
 package elevator;
 
-import static org.junit.Assert.*;
+//import static org.junit.Assert.*;
 
-import org.junit.Test;
+//import org.junit.Test;
 
 public class ElevatorTest {
 	
-	private int currentFloor;
-	private int destinationFloor;
+	//private int currentFloor;
+	//private int destinationFloor;
 	Elevator e = new Elevator(20);
 
 	/*
@@ -23,14 +24,5 @@ public class ElevatorTest {
 		boolean actual = e.move();
 		assertEquals("Wrong answer: ", expected, actual);
 	}*/
-	
-	@Test
-	public void getDirectionTest(){
-		boolean direction = true;
-		String expected = "Elevator going	 ^.UP.^";
-		String actual = e.getDirection(); //Warning - cannot convert from a void to a string.
-		assertEquals("Wrong answer: ", expected, actual);
-		
-	}
 
 }

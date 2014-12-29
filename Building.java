@@ -1,19 +1,28 @@
+/**
+ * @author Radu Asavei + Gary Murphy
+ * @since 2-November-2014
+ * @version 29-December-2014
+ */
+
 package elevator;
 import java.util.ArrayList;
 public class Building {
 	
 	private static int numOfFloors;
 	
-	@SuppressWarnings("unused") Elevator elevator1;
+	Elevator elevator1;
 
 	public ArrayList<Customer> customerList = new ArrayList<Customer>();
 	
 	// building constructor
 	public Building(int numOfFloors) {
 		this.setNumOfFloors(numOfFloors);
-		System.out.println("Your building has "+ numOfFloors+" floors." );
+		System.out.println("Your building has " + numOfFloors + " floors." );
+		System.out.println(" ");
 		
-	//	create new elevator for this building
+	/*	create new elevator for this building
+	 * 	use the integer given by the user for the number of floors for the building
+	 */
 		this.elevator1 = new Elevator(numOfFloors);
 		
 	// customer list for this building
@@ -29,36 +38,9 @@ public class Building {
 
 	/**
 	 * @param numOfFloors the numOfFloors to set
+	 * @return 
 	 */
-	public void setNumOfFloors(int numOfFloors) {
-		Building.numOfFloors = numOfFloors;
+	public int setNumOfFloors(int numOfFloors) {
+		return Building.numOfFloors = numOfFloors;
 	}
-
-	/*
-	 * @return the customerList
-	 
-	public ArrayList<Customer> getCustomerList() {
-		return customerList;
-	}
-
-	/**
-	 * @param customerList the customerList to set
-	 
-	public void setCustomerList(ArrayList<Customer> customerList) {
-		this.customerList = customerList;
-	}
-	
-	/**
-	 * @return the elev
-	 
-	public Elevator getElev() {
-		return elev;
-	}
-
-	/**
-	 * @param elev the elev to set
-	 
-	public void setElev(Elevator elev) {
-		this.elev = elev;
-	}*/
 }

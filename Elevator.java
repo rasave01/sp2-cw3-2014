@@ -1,26 +1,34 @@
+/**
+ * @author Radu Asavei + Gary Murphy
+ * @since 2-November-2014
+ * @version 29-December-2014
+ */
 package elevator;
 
 import java.util.Random;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.TimeUnit;
 
-// elevator constructor
+
 public class Elevator {
 
 	public int currentFloor;
 	public boolean direction;
 	public ArrayList<Customer> registerList = new ArrayList<Customer>();
 	public int topFloor;
-
+	
+	/*
+	 *  elevator constructor
+	 */
 	public Elevator(int numOfFloors) {	
 		this.topFloor = numOfFloors;
-		System.out.println("Your building was equipped with an elevator.");
+		System.out.println("Your building is equipped with an elevator.");
 		
 		if(numOfFloors>12){	
 			System.out.println("This is an American building, so the 13th floor is skipped.");
 			this.topFloor = numOfFloors+1;
 		} 
-		System.out.print("The following floors are avaiable: ");
+		System.out.print("The following floors are available: ");
 		for (int i=1; i<=numOfFloors; i++){
 			if (i<13){
 				System.out.print(i+" > ");
@@ -50,13 +58,16 @@ public class Elevator {
 	}
 	
 				
-	// prints the current floor of the elevator
+	// returns the current floor of the elevator
 	public int getCurrentFloor() {
 		return currentFloor;
 		//System.out.println("The current floor is "+ currentFloor + ".");
 	}
 
-	// create random floor
+	/* 
+	 * @return random floor number limited/bound by
+	 * the number of floors in the building as chosen by the user
+	 */
 	public static int setRandomFloor(int numOfFloors) {
 		Random randomFloor = new Random(); 
 		if(numOfFloors<13){	
@@ -81,26 +92,26 @@ public class Elevator {
 		} else {
 			System.out.println("Elevator going	v.DOWN.v");
 		}
-	}
+	} //end of getDirection method
 
 	//direction setter
 	public void setDirection(boolean direction) {
 		this.direction = direction;
-	}
+	} // end of setDirection method
 
 	//method for customer joining the elevator
-	@SuppressWarnings("unused")
+	//@SuppressWarnings("unused")
 	public void customerJoins(Customer customer){
 		this.registerList.add(customer);
 		System.out.println("Customer "+customer.getID()+" joins the elevator");
 	}
 	
 	//method for customer leaving the elevator
-	@SuppressWarnings("unused")
+	//@SuppressWarnings("unused")
 	public void customerLeaves(Customer customer){
 		this.registerList.remove(customer);
 		System.out.println("Customer "+customer.getID()+" leaves the elevator");
-	}
+	} // end of customerLeaves method
 	
 	// method to move the elevator to the floor floorNo and display progress
 	public int move(int floorNo) throws InterruptedException {
@@ -109,12 +120,12 @@ public class Elevator {
 		
 		// check if elevator needs to go up
 		if(this.currentFloor<floorNo){
-			System.out.println("Elevator moving ^^UP^^");
+			System.out.println("Elevator moving ^^UP^^ to floor" + floorNo);
 			//step=0;
 			while(step<floorNo-this.currentFloor){
 				System.out.print("^");
 				//Pause for 1/4 second				
-				Thread.sleep(250);
+				Thread.sleep(500);
 				step++;
 			}
 			System.out.println();
@@ -122,7 +133,7 @@ public class Elevator {
 		
 		// check if elevator needs to go down
 		if(this.currentFloor>floorNo){
-			System.out.println("Elevator moving vvDOWNvv");
+			System.out.println("Elevator moving vvDOWNvv to floor " + floorNo);
 			//step=0;
 			while(step<this.currentFloor-floorNo){
 				System.out.print("v");
@@ -135,5 +146,5 @@ public class Elevator {
 		this.currentFloor = floorNo;
 		System.out.println("Elevator arrives on floor "+ this.currentFloor);
 		return step;
-	}
+	} // end of move method
 }

@@ -1,3 +1,9 @@
+/**
+ * @author Radu Asavei + Gary Murphy
+ * @since 2-November-2014
+ * @version 29-December-2014
+ */
+
 package elevator;
 
 public class Customer {
@@ -8,15 +14,17 @@ public class Customer {
 	private int destinationFloor;
 	private boolean inElevator;
 	private int ID;
-	// customer constructor
+	
+	/*	
+	 * 	customer constructor
+	 */
 	public Customer(int newID, Building bld){
 		ID = newID;
 		startFloor = Elevator.setRandomFloor(bld.getNumOfFloors());
 		destinationFloor = Elevator.setRandomFloor(bld.getNumOfFloors());
 		inElevator = false;
-		
-		//System.out.println("Random customer "+ID+"starts on floor "+startFloor+" and goes to floor "+destinationFloor);
-	}
+	} //end of Customer constructor
+	
 	public int getStartFloor(){
 		return this.startFloor;
 	}

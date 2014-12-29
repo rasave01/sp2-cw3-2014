@@ -1,11 +1,14 @@
+/**
+ * @author Radu Asavei + Gary Murphy
+ * @since 2-November-2014
+ * @version 29-December-2014
+ */
+ 
 package elevator;
 
 import java.util.InputMismatchException;
 import java.util.Iterator;
-/**
- * @author Gary Murphy + Radu Asavei
- *
- */
+
 import java.util.Scanner;
 
 
@@ -16,13 +19,31 @@ public class Simulator {
 	private static int ourSteps;
 	private static int defaultSteps;
 
+	/* <pre>
+	 * Starts <code>main</code> method. 
+	 * <li>Prompts user for input to run the elevator simulator.</li>
+	 * <li>
+	 * <p>A summary will be printed once the simulation run ends
+	 * which will show the difference between the default and the new/custom strategy 
+	 * and display which one is more efficient</li>
+	 * @exception <code>InterruptedException</code> Describe any thrown exception
+	 * </pre>
+	 */
 	public static void main(String[] args) throws InterruptedException {
 
+		//Create Scanner variable to accept user input
 		Scanner input = new Scanner(System.in);
 		
+		/*
+		 * Create parameters to be used in the input validation loop below
+		 */
 		int numOfFloorsValid = 0;
 		boolean validInput = false;
 		System.out.println("Enter the number of floors for the building: ");
+		
+		/*
+		 * 
+		 */
 		while(!validInput){
 			try {
 				//System.out.println("Enter the number of floors for the building: ");
@@ -112,15 +133,21 @@ public class Simulator {
 		
 		
 		System.out.println ("************************ END OF SIMULATION ****************************");
-	}
-	// method to run our strategy in Building Bld 
-	//Will return the number of stops the elevator made to pick-up and drop all customers
+	} // end of main method
+	
+	/* <pre>	
+	 * Runs our strategy in Building Bld 
+	 * 	@return <code>ourTime</code> i.e. the time the elevator took to pick-up and drop all customers
+	 * </pre>
+	 */
 	private static long runOurStrategy(Building bld) throws InterruptedException {
 		
 		
-		/* 	move the elevator to the 1st floor.
+		/* 	move the elevator to the 1st floor in order to reset
 		* 	This move does not count towards the result, 
-		*	as both simulations need to start from the same floor, for a more accurate comparison */
+		*	as both simulations need to start from the same floor, 
+		*	for a more accurate comparison 
+		*/
 		bld.elevator1.move(1); 
 		
 		StopWatch ourStrategyTime = new StopWatch();
@@ -134,7 +161,9 @@ public class Simulator {
 		// move the elevator to the 1st floor
 		bld.elevator1.move(1);
 		
-		// lift going up and picking up all customers
+		/* elevator going up and picking up all customers
+		 * regardless of which direction they are travelling
+		 */
 		int checkFloor = bld.elevator1.currentFloor;
 		while(checkFloor<=bld.elevator1.topFloor){
 			
@@ -150,16 +179,18 @@ public class Simulator {
 				}
 
 			}
-			// check that customers already in the lift do not need to get off on this floor
-			// if so take them off the lift and off the registerList
+			
+			/* check if customers already in the elevator need to get off on this floor
+			 * if so, take them out of the elevator and off of the registerList
+			 */
 			for(int i=0; i<bld.elevator1.registerList.size(); i++){
-				Customer currentLiftCustomer = bld.elevator1.registerList.get(i);
-				if(currentLiftCustomer.getDestinationFloor()==checkFloor){
+				Customer currentElevCustomer = bld.elevator1.registerList.get(i);
+				if(currentElevCustomer.getDestinationFloor()==checkFloor){
 					/*if(bld.elevator1.currentFloor!=checkFloor){
 						bld.elevator1.move(checkFloor);
 						result++;
 					}*/
-					bld.elevator1.customerLeaves(currentLiftCustomer);
+					bld.elevator1.customerLeaves(currentElevCustomer);
 				}
 			}
 			
@@ -167,16 +198,18 @@ public class Simulator {
 		}
 		while(checkFloor>=1){
 			
-			//iterate "manually" as using an iterator while removing element throws error  
+			/*
+			 *   iterate "manually" as using an iterator while removing element throws error
+			 */
 			for(int i=0; i<bld.elevator1.registerList.size(); i++){
-				Customer currentLiftCustomer = bld.elevator1.registerList.get(i);
+				Customer currentElevCustomer = bld.elevator1.registerList.get(i);
 				
-				if(currentLiftCustomer.getDestinationFloor()==checkFloor){
+				if(currentElevCustomer.getDestinationFloor()==checkFloor){
 					if(bld.elevator1.currentFloor!=checkFloor){
 						ourSteps = ourSteps+bld.elevator1.move(checkFloor);
 						ourMoves++;
 					}
-					bld.elevator1.customerLeaves(currentLiftCustomer);
+					bld.elevator1.customerLeaves(currentElevCustomer);
 				}
 			}
 			checkFloor--;
@@ -189,11 +222,12 @@ public class Simulator {
 		System.out.println(" ");
 		return ourTime;
 		
-	}
+	} //end of runOurStrategy method
 
 	
-	// method to run the default strategy in Building Bld 
-	//Will return the number of stops the elevator made to pick-up and drop all customers
+	/*	method to run the default strategy in the user created building
+	 * 	@return the number of stops the elevator made to pick-up and drop all customers
+	 */
 	private static long runDefaultStrategy(Building bld) throws InterruptedException {
 		StopWatch defaultStrategyTime = new StopWatch();
 		
@@ -208,7 +242,7 @@ public class Simulator {
 		
 		System.out.println("Default strategy simulation has started:");
 				
-		// lift going up and picking up all customers
+		// elevator going up and picking up all customers
 		int checkFloor = bld.elevator1.currentFloor;
 		while(checkFloor<=bld.elevator1.topFloor){
 			//System.out.println("Checking floor "+checkFloor);
@@ -233,21 +267,21 @@ public class Simulator {
 		defaultMoves++;
 		
 		
-		// lift coming down and dropping all customers in the lift
+		// elevator coming down and dropping off all customers in the elevator
 		checkFloor = bld.elevator1.currentFloor;
 		
 		while(checkFloor>=1){
 			
 			//iterate "manually" as using an iterator while removing element throws error  
 			for(int i=0; i<bld.elevator1.registerList.size(); i++){
-				Customer currentLiftCustomer = bld.elevator1.registerList.get(i);
+				Customer currentElevCustomer = bld.elevator1.registerList.get(i);
 				
-				if(currentLiftCustomer.getDestinationFloor()==checkFloor){
+				if(currentElevCustomer.getDestinationFloor()==checkFloor){
 					if(bld.elevator1.currentFloor!=checkFloor){
 						defaultSteps = defaultSteps + bld.elevator1.move(checkFloor);
 						defaultMoves++;
 					}
-					bld.elevator1.customerLeaves(currentLiftCustomer);
+					bld.elevator1.customerLeaves(currentElevCustomer);
 				}
 			}
 			checkFloor--;
@@ -260,11 +294,12 @@ public class Simulator {
 		System.out.println("*************************************************");
 		System.out.println(" ");
 		return defTime;
-	}
+	} // end of runDefaultStrategy method
 	
 	
-	// iterate through number of customers and create customers
-	// use i as ID as this will ensure each customer has has an unique ID
+	/* iterate through number of customers and create customers
+	 * use i as ID as this will ensure each customer has has an unique ID
+	 */
 	private static void createCustomers(Building bld, int numOfCustomers) {
 		
 		for (int i=1; i<=numOfCustomers; i++){
@@ -285,5 +320,5 @@ public class Simulator {
 		}
 		System.out.println();
 		bld.elevator1.getCurrentFloor();
-	}
+	} //end of createCustomers method
 }
