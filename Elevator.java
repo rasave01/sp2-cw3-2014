@@ -103,14 +103,17 @@ public class Elevator {
 	}
 	
 	// method to move the elevator to the floor floorNo and display progress
-	public void move(int floorNo) throws InterruptedException {
+	public int move(int floorNo) throws InterruptedException {
+		
+		int step = 0;
+		
 		// check if elevator needs to go up
 		if(this.currentFloor<floorNo){
 			System.out.println("Elevator moving ^^UP^^");
-			int step=0;
+			//step=0;
 			while(step<floorNo-this.currentFloor){
 				System.out.print("^");
-				//Pause for 1/2 second				
+				//Pause for 1/4 second				
 				Thread.sleep(250);
 				step++;
 			}
@@ -120,10 +123,10 @@ public class Elevator {
 		// check if elevator needs to go down
 		if(this.currentFloor>floorNo){
 			System.out.println("Elevator moving vvDOWNvv");
-			int step=0;
+			//step=0;
 			while(step<this.currentFloor-floorNo){
 				System.out.print("v");
-				//Pause for 1/2 second
+				//Pause for 1/4 second
 				Thread.sleep(250);
 				step++;
 			}
@@ -131,5 +134,6 @@ public class Elevator {
 		}
 		this.currentFloor = floorNo;
 		System.out.println("Elevator arrives on floor "+ this.currentFloor);
+		return step;
 	}
 }
